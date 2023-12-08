@@ -1,12 +1,12 @@
-#include "Account.cpp"
-#include "dataBaseFunc.cpp"
-
-using namespace std;
+#include "headers.h"
 
 int main()
 {
-    vector<Account> users;
-    log_out(users);
+    while (true)
+    {
+        system("cls");
+        log_out();
+    }
 
     return 0;
 }
