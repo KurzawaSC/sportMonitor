@@ -10,11 +10,11 @@
 #define _headers_H_
 
 
-
 using namespace std;
 
 class Account;
 void upload_to_data_base(Account user);
+void load_data_from_base();
 
 class Account
 {
@@ -30,8 +30,11 @@ public:
                     email(emailI), password(passwordI), age(ageI), weight(weightI), height(heightI), sex(sexI) {};
     string get_email() {return email;}
 
+    string getName() {return name;}
+
 
     friend void upload_to_data_base(Account user);
+    friend void load_data_from_base();
 };
 
 class EatMonitor
@@ -40,15 +43,15 @@ class EatMonitor
         int kcal, protein, fat, carbs;
     
     public:
-       // EatMonitor();
+        EatMonitor(Account user);
         void daily_tab();
 };
 
-static vector<Account> users;
+extern vector<Account> users;
 
 Account create_account();
 void log_in(Account user);
 void log_out();
-void load_to_data_base();
+
 
 #endif

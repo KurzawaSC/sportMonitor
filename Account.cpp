@@ -1,7 +1,5 @@
 #include "headers.h"
 
-using namespace std;
-
 void log_out()
 {
     char choice;
@@ -39,7 +37,7 @@ void log_in(Account user)
         system("cls");
         cout << "Hello," << endl;
         cout << "1. View your diet" << endl;
-        cout << "2. Traning notepad" << endl;
+        cout << "2. Training notepad" << endl;
         cout << "3 . Log out" << endl;
 
         choice = getch();
@@ -47,7 +45,11 @@ void log_in(Account user)
         switch (choice)
         {
         case '1':
+        {
+            EatMonitor monitor(user);
+            monitor.daily_tab();
             break;
+        }
         case '2':
             break;
         case '3':
@@ -56,28 +58,6 @@ void log_in(Account user)
         default:
             break;
         }
-    }
-
-
-
-//EatMonitor::EatMonitor()
-    //{
-          //  cout << endl << "Enter your kcal/day: ";
-           // cin >> kcal;
-            //cout << endl << "How many protein you need?: ";
-            //cin >> protein;
-           // cout << endl << "How many fat you need?: ";
-           // cin >> fat;
-           // carbs = (kcal - (protein*4 + fat*9));
-           // system("cls");
-   // }
-
-    void EatMonitor::daily_tab()
-    {
-            cout << "kcal: " << kcal << endl;
-            cout << "protein: " << protein << endl;
-            cout << "fat: " << fat << endl;
-            cout << "carbs: " << carbs << endl << endl;
     }
 
     Account create_account()
@@ -121,18 +101,3 @@ void log_in(Account user)
         return user;
     }
 
-    void upload_to_data_base(Account user)
-    {
-        ofstream file("users.txt");
-        file << user.name << endl;
-        file << user.surname << endl;
-        file << user.email << endl;
-        file << user.password << endl;
-        file << user.age << endl;
-        file << user. weight << endl;
-        file << user.height << endl;
-        file << user.sex << endl;
-
-        file.close();
-
-    }
