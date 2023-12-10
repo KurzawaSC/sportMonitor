@@ -16,7 +16,20 @@ void log_out()
         cin >> email;
         for (auto user:users)
         {
-            if (email == user.get_email()) log_in(user);
+            if (email == user.get_email())
+            {
+                string password;
+                cout << "Enter password: ";
+                cin >> password;
+                if (password == user.get_password()) log_in(user);
+                else cout << "Wrong password!" << endl;
+                Sleep(1000);
+                break;
+            } else {
+                cout << "User with this email does not exist" << endl;
+                Sleep(1000);
+                break;
+            }
         }
     }
     else if (choice == '2')
@@ -34,29 +47,51 @@ void log_in(Account user)
         char choice;
 
         cout << "You logged in";
-        system("cls");
-        cout << "Hello," << endl;
-        cout << "1. View your diet" << endl;
-        cout << "2. Training notepad" << endl;
-        cout << "3 . Log out" << endl;
-
-        choice = getch();
-
-        switch (choice)
+        while (true)
         {
-        case '1':
-        {
-            EatMonitor monitor(user);
-            monitor.daily_tab();
-            break;
-        }
-        case '2':
-            break;
-        case '3':
-            break;
-        
-        default:
-            break;
+            system("cls");
+            cout << "Hello," << endl;
+            cout << "1. View your diet" << endl;
+            cout << "2. Training notepad" << endl;
+            cout << "3 . Log out" << endl;
+
+            choice = getch();
+            char choiceEat{};
+            switch (choice)
+            {
+            case '1':
+            {
+                EatMonitor monitor(user);
+                while(choiceEat != '2')
+                {
+                    monitor.daily_tab();
+                    cout << "1. Add product" << endl;
+                    cout << "2. Exit" << endl;
+
+                    choiceEat = getch();
+                    system("cls");
+                    monitor.daily_tab();
+                    switch (choiceEat)
+                    {
+                    case '1':
+                        products(&monitor);
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                }
+                break;
+            }
+            case '2':
+                break;
+            case '3':
+                break;
+            
+            default:
+                break;
+            }
+            if(choice == '3') break;
         }
     }
 
