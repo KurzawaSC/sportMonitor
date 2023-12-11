@@ -1,0 +1,12 @@
+Deadlift
+150
+1
+Squat
+90
+5
+OHP
+50
+5
+Bench
+85
+5

@@ -36,3 +36,62 @@ void upload_to_data_base(Account user)
     file << user.sex << endl;
     file.close();
 }
+
+void load_exercises(vector<Exercise> &exercises)
+{
+    fstream file("exercise.txt", ios::in);
+    if(file.is_open())
+    {
+        while(!file.eof())
+        {
+            string name;
+            unsigned short int weight, num_reps;
+            file >> name;
+            file >> weight;
+            file >> num_reps;
+            exercises.push_back(Exercise(name, weight, num_reps));
+        }
+        file.close();
+    }
+}
+
+void upload_exercise(vector<Exercise> &exercises, string p_name,
+                            unsigned short int p_weight, unsigned short int p_num_reps)
+{
+    string name;
+    unsigned short int weight, num_reps;
+    if(p_name == "empty")
+    {
+        cout << "Enter the name of exercise: ";
+        cin >> name;
+        cout << "Enter weight: ";
+        cin >> weight;
+        cout << "Enter number of reps: ";
+        cin >> num_reps;
+        Exercise exercise_add(name, weight, num_reps);
+        exercises.push_back(exercise_add);
+
+        fstream file("exercise.txt", ios::app);
+        file << endl << exercise_add.get_name() << endl;
+        file << exercise_add.get_weight() << endl;
+        file << exercise_add.get_num_reps();
+        file.close(); 
+    } else
+    {
+        fstream file("exercise.txt", ios::app);
+        if(file.is_open())
+        {
+            for(auto exercise : exercises)
+            {
+                if(exercise.get_name() != "")
+                {
+                    file << exercise.get_name() << endl;
+                    file << exercise.get_weight() << endl;
+                    file << exercise.get_num_reps() << endl;
+                }
+            }
+            file.close(); 
+        }
+    }
+    
+}

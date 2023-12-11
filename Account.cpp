@@ -52,7 +52,7 @@ void log_in(Account user)
             system("cls");
             cout << "Hello," << endl;
             cout << "1. View your diet" << endl;
-            cout << "2. Training notepad" << endl;
+            cout << "2. Training diary" << endl;
             cout << "3 . Log out" << endl;
 
             choice = getch();
@@ -84,6 +84,7 @@ void log_in(Account user)
                 break;
             }
             case '2':
+                display_exercises();
                 break;
             case '3':
                 break;

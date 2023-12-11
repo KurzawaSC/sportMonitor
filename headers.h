@@ -14,9 +14,14 @@ using namespace std;
 
 class Account;
 class EatMonitor;
+class Exercise;
 void upload_to_data_base(Account user);
 void load_data_from_base();
 void products(EatMonitor *monitor);
+void load_exercises(vector<Exercise> &exercises);
+void upload_exercise(vector<Exercise> &exercises, string p_name = "empty",
+                            unsigned short int p_weight = 1, unsigned short int p_num_reps = 1);
+void display_exercises();
 
 class Account
 {
@@ -67,6 +72,22 @@ class Product: public EatMonitor {
         }
 
         friend void products(EatMonitor *monitor);
+};
+
+class Exercise {
+    private:
+        string name;
+        unsigned short int weight{}, num_reps{};
+    public:
+        Exercise(string p_name, unsigned short int p_weight, unsigned short int p_num_reps): name(p_name),
+                    weight(p_weight), num_reps(p_num_reps) {};
+
+        void set_weight(unsigned short int p_weight) {weight = p_weight;}
+        void set_num_reps(unsigned short int p_num_reps) {num_reps = p_num_reps;}
+
+        string get_name() {return name;}
+        unsigned short int get_weight() {return weight;}
+        unsigned short int get_num_reps() {return num_reps;}
 };
 
 extern vector<Account> users;
