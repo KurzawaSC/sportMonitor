@@ -15,6 +15,7 @@ EatMonitor::EatMonitor(Account user)
             file >> protein;
             file >> fat;
             file >> carbs;
+            file >> user_id;
             file.close();
             find = true;
         }
@@ -33,7 +34,7 @@ EatMonitor::EatMonitor(Account user)
         if(file.is_open())
         {
             file << user.getName() << endl;
-            file << kcal << endl << protein << endl << fat << endl << carbs << endl;
+            file << kcal << endl << protein << endl << fat << endl << carbs << endl << user.getId() << endl;
         }   
         file.close();
     }
@@ -60,13 +61,14 @@ void products(EatMonitor *monitor)
         while(!file.eof())
         {
             string name{};
-            int kcal{}, protein{}, fat{}, carbs{};
-            file >> name;
+            int kcal{}, protein{}, fat{}, carbs{}, user_id{};
+            file >> name; if(name == "") break;
             file >> kcal;
             file >> protein;
             file >> fat;
             file >> carbs;
-            products.push_back(Product(name, kcal, protein, fat, carbs));
+            file >> user_id;
+            if(user_id == monitor->user_id) products.push_back(Product(name, kcal, protein, fat, carbs));
     }
     file.close();
     int i = 2;
@@ -93,11 +95,12 @@ void products(EatMonitor *monitor)
         cin >> p_fat;
         p_carbs = (p_kcal - p_protein*4 - p_fat*9)/4;
         products.push_back(Product(p_name, p_kcal, p_protein, p_fat, p_carbs));
-        file << endl << p_name << endl;
+        file << p_name << endl;
         file << p_kcal << endl;
         file << p_protein << endl;
         file << p_fat << endl;
-        file << p_carbs;
+        file << p_carbs << endl;
+        file << monitor->user_id << endl;
         file.close();
         break;
     case 0:

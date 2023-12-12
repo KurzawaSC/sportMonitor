@@ -10,7 +10,7 @@ void load_data_from_base()
         char sex{};
         unsigned short int age{}, weight{}, height{};
 
-        file >> name; if(!name.length()) break;
+        file >> name; if(name == "") break;
         file >> surname;
         file >> email;
         file >> password;
@@ -37,7 +37,7 @@ void upload_to_data_base(Account user)
     file.close();
 }
 
-void load_exercises(vector<Exercise> &exercises)
+void load_exercises(vector<Exercise> &exercises, int user_id)
 {
     fstream file("exercise.txt", ios::in);
     if(file.is_open())
@@ -46,16 +46,18 @@ void load_exercises(vector<Exercise> &exercises)
         {
             string name;
             unsigned short int weight, num_reps;
-            file >> name;
+            int l_user_id;
+            file >> name; if(name == "") break;
             file >> weight;
             file >> num_reps;
-            exercises.push_back(Exercise(name, weight, num_reps));
+            file >> l_user_id;
+            if(l_user_id == user_id) exercises.push_back(Exercise(name, weight, num_reps, l_user_id));
         }
         file.close();
     }
 }
 
-void upload_exercise(vector<Exercise> &exercises, string p_name,
+void upload_exercise(vector<Exercise> &exercises, int user_id, string p_name,
                             unsigned short int p_weight, unsigned short int p_num_reps)
 {
     string name;
@@ -68,13 +70,14 @@ void upload_exercise(vector<Exercise> &exercises, string p_name,
         cin >> weight;
         cout << "Enter number of reps: ";
         cin >> num_reps;
-        Exercise exercise_add(name, weight, num_reps);
+        Exercise exercise_add(name, weight, num_reps, user_id);
         exercises.push_back(exercise_add);
 
         fstream file("exercise.txt", ios::app);
-        file << endl << exercise_add.get_name() << endl;
+        file << exercise_add.get_name() << endl;
         file << exercise_add.get_weight() << endl;
-        file << exercise_add.get_num_reps();
+        file << exercise_add.get_num_reps() << endl;
+        file << user_id << endl;
         file.close(); 
     } else
     {
@@ -88,6 +91,7 @@ void upload_exercise(vector<Exercise> &exercises, string p_name,
                     file << exercise.get_name() << endl;
                     file << exercise.get_weight() << endl;
                     file << exercise.get_num_reps() << endl;
+                    file << user_id << endl;
                 }
             }
             file.close(); 

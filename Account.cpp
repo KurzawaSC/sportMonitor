@@ -1,5 +1,7 @@
 #include "headers.h"
 
+int Account::number_of_users = 0;
+
 void log_out()
 {
     char choice;
@@ -12,12 +14,14 @@ void log_out()
     if (choice == '1')
     {
         string email;
+        bool found = false;
         cout << "Enter your email: ";
         cin >> email;
         for (auto user:users)
         {
             if (email == user.get_email())
             {
+                found = true;
                 string password;
                 cout << "Enter password: ";
                 cin >> password;
@@ -25,7 +29,7 @@ void log_out()
                 else cout << "Wrong password!" << endl;
                 Sleep(1000);
                 break;
-            } else {
+            } else if(found){
                 cout << "User with this email does not exist" << endl;
                 Sleep(1000);
                 break;
@@ -84,7 +88,7 @@ void log_in(Account user)
                 break;
             }
             case '2':
-                display_exercises();
+                display_exercises(user.getId());
                 break;
             case '3':
                 break;

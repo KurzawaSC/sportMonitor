@@ -18,26 +18,30 @@ class Exercise;
 void upload_to_data_base(Account user);
 void load_data_from_base();
 void products(EatMonitor *monitor);
-void load_exercises(vector<Exercise> &exercises);
-void upload_exercise(vector<Exercise> &exercises, string p_name = "empty",
+void load_exercises(vector<Exercise> &exercises, int user_id);
+void upload_exercise(vector<Exercise> &exercises, int user_id, string p_name = "empty",
                             unsigned short int p_weight = 1, unsigned short int p_num_reps = 1);
-void display_exercises();
+void display_exercises(int user_id);
 
 class Account
 {
 private:
     string name, surname, email, password;
-    int userId;
+    int userId{};
     char sex;
     unsigned short int age, weight, height;
+    static int number_of_users;
 
 public:
     Account(string nameI, string surnameI, string emailI, string passwordI, unsigned int ageI, 
                     unsigned int weightI, unsigned int heightI, unsigned int sexI): name(nameI), surname(surnameI),
-                    email(emailI), password(passwordI), age(ageI), weight(weightI), height(heightI), sex(sexI) {};
+                    email(emailI), password(passwordI), age(ageI), weight(weightI), height(heightI), sex(sexI) {
+                        userId = ++number_of_users;
+                    };
     string get_email() {return email;}
     string get_password() {return password;}
     string getName() {return name;}
+    int getId() {return userId;}
 
 
     friend void upload_to_data_base(Account user);
@@ -47,7 +51,7 @@ public:
 class EatMonitor
 {
     private:
-        int used_kcal{}, used_protein{}, used_fat{}, used_carbs{};
+        int used_kcal{}, used_protein{}, used_fat{}, used_carbs{}, user_id{};
     protected:
         int kcal, protein, fat, carbs;
     
@@ -78,9 +82,10 @@ class Exercise {
     private:
         string name;
         unsigned short int weight{}, num_reps{};
+        int user_id{};
     public:
-        Exercise(string p_name, unsigned short int p_weight, unsigned short int p_num_reps): name(p_name),
-                    weight(p_weight), num_reps(p_num_reps) {};
+        Exercise(string p_name, unsigned short int p_weight, unsigned short int p_num_reps, int p_user_id): name(p_name),
+                    weight(p_weight), num_reps(p_num_reps), user_id(p_user_id) {};
 
         void set_weight(unsigned short int p_weight) {weight = p_weight;}
         void set_num_reps(unsigned short int p_num_reps) {num_reps = p_num_reps;}

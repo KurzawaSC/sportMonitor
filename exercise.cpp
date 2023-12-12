@@ -1,10 +1,9 @@
 #include "headers.h"
 
-void display_exercises()
+void display_exercises(int user_id)
 {
     vector<Exercise> exercises;
-    load_exercises(exercises);
-    cout << exercises[0].get_name()<< endl;
+    load_exercises(exercises, user_id);
     char choice_exercise{};
     int i =1;
     while(true)
@@ -70,7 +69,7 @@ void display_exercises()
                             exercises[ex-1].set_num_reps(num_reps);
                             file.close();
                             file.open("exercise.txt", ios::out | ios::trunc);
-                            upload_exercise(exercises, exercises[ex-1].get_name());
+                            upload_exercise(exercises, user_id, exercises[ex-1].get_name());
                         }
                     }
                 }
@@ -81,7 +80,7 @@ void display_exercises()
             break;
 
         case '3':
-            upload_exercise(exercises);
+            upload_exercise(exercises, user_id);
             break;
 
         case '4':
