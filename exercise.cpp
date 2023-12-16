@@ -11,11 +11,12 @@ void display_exercises(int user_id)
         bool end = false;
         system("cls");
         cout << "1. Show exercises" << endl;
-        cout << "2. Update your progress" << endl;
+        cout << "2. Update weight" << endl;
         cout << "3. Add new exercise" << endl;
         cout << "4. Exit" << endl;
 
         choice_exercise = getch();
+        string line{};
         switch (choice_exercise)
         {
         case '1':
@@ -26,7 +27,7 @@ void display_exercises(int user_id)
             {
                 if (exercise.get_name() != "")
                 {
-                    cout << i++ << ". " << exercise.get_name() << "- Weight: " << exercise.get_weight() << 
+                    cout << i++ << ". " << exercise.get_name() << " - Weight: " << exercise.get_weight() << 
                             " Reps: " << exercise.get_num_reps() << endl;
                 }
             }
@@ -34,20 +35,37 @@ void display_exercises(int user_id)
             break;
 
         case '2':
-            i = 1;
-            system("cls");
-            cout << "0. Exit" << endl;
-            for(auto exercise : exercises)
+            cin.sync();
+            unsigned short int ex;
+            int go_next;
+            go_next = 0;
+            while(go_next < 1)
             {
-                if (exercise.get_name() != "")
+                i = 1;
+                system("cls");
+                cout << "0. Exit" << endl;
+                for(auto exercise : exercises)
                 {
-                    cout << i++ << ". " << exercise.get_name() << "- Weight: " << exercise.get_weight() << 
-                            " Reps: " << exercise.get_num_reps() << endl;
+                    if (exercise.get_name() != "")
+                    {
+                        cout << i++ << ". " << exercise.get_name() << " - Weight: " << exercise.get_weight() << 
+                                " Reps: " << exercise.get_num_reps() << endl;
+                    }
+                }
+                try{
+                    go_next++;
+                    getline(cin, line);
+                    ex = stoi(line);
+                }
+                catch(...)
+                {
+                    go_next = 0;
+                    cin.clear();
+                    cout << endl << "You entered wrong data" << endl;
+                    Sleep(1000);
+                    system("cls");
                 }
             }
-
-            unsigned short int ex;
-            cin >> ex;
             if(ex == 0) {}
             else {
                 string nameEx;
@@ -60,16 +78,32 @@ void display_exercises(int user_id)
                         if(nameEx == exercises[ex-1].get_name())
                         {
                             system("cls");
-                            unsigned short int weight, num_reps;
-                            cout << "Enter weight: ";
-                            cin >> weight;
-                            cout << "Enter number of reps: ";
-                            cin >> num_reps;
-                            exercises[ex-1].set_weight(weight);
-                            exercises[ex-1].set_num_reps(num_reps);
-                            file.close();
-                            file.open("exercise.txt", ios::out | ios::trunc);
-                            upload_exercise(exercises, user_id, exercises[ex-1].get_name());
+                            unsigned short int weight{}, num_reps{};
+                            go_next = 0;
+                            while(go_next < 1)
+                            {
+                                try {
+                                    go_next++;
+                                    cout << "Enter weight: ";
+                                    getline(cin, line);
+                                    weight = stoi(line);
+                                    cout << "Enter number of reps: ";
+                                    getline(cin, line);
+                                    num_reps = stoi(line);
+                                    exercises[ex-1].set_weight(weight);
+                                    exercises[ex-1].set_num_reps(num_reps);
+                                    file.close();
+                                    file.open("exercise.txt", ios::out | ios::trunc);
+                                    upload_exercise(exercises, user_id, exercises[ex-1].get_name());
+                                }
+                                catch(...)
+                                {
+                                    go_next = 0;
+                                    cout << endl << "You entered wrong data" << endl;
+                                    Sleep(1000);
+                                    system("cls");
+                                }
+                            }
                         }
                     }
                 }

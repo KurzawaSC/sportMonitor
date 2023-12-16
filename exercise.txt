@@ -1,8 +1,0 @@
-Deadlift
-135
-6
-1
-Squat
-90
-5
-2

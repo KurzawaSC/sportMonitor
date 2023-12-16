@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <vector>
 #include <fstream>
+#include <typeinfo>
+#include <limits>
 
 
 #ifndef _headers_H_
@@ -15,6 +17,7 @@ using namespace std;
 class Account;
 class EatMonitor;
 class Exercise;
+class WrongInputException;
 void upload_to_data_base(Account user);
 void load_data_from_base();
 void products(EatMonitor *monitor);
@@ -22,6 +25,8 @@ void load_exercises(vector<Exercise> &exercises, int user_id);
 void upload_exercise(vector<Exercise> &exercises, int user_id, string p_name = "empty",
                             unsigned short int p_weight = 1, unsigned short int p_num_reps = 1);
 void display_exercises(int user_id);
+
+class WrongInputException {};
 
 class Account
 {

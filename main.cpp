@@ -1,3 +1,8 @@
+/*
+    sportMonitor by Kurzawa :)
+*/
+
+
 #include "headers.h"
 
 vector<Account> users;

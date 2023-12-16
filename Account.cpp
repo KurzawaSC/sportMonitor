@@ -16,32 +16,34 @@ void log_out()
         string email;
         bool found = false;
         cout << "Enter your email: ";
-        cin >> email;
+        cin >> email;;
         for (auto user:users)
+        if (email == user.get_email())
         {
-            if (email == user.get_email())
-            {
-                found = true;
-                string password;
-                cout << "Enter password: ";
-                cin >> password;
-                if (password == user.get_password()) log_in(user);
-                else cout << "Wrong password!" << endl;
-                Sleep(1000);
-                break;
-            } else if(found){
-                cout << "User with this email does not exist" << endl;
-                Sleep(1000);
-                break;
-            }
+            found = true;
+            string password;
+            cout << "Enter password: ";
+            cin >> password;
+            if (password == user.get_password()) log_in(user);
+            else cout << "Wrong password!" << endl;
+            Sleep(1000);
+            break;
+        } else if(!found){
+            cout << "User with this email does not exist" << endl;
+            Sleep(1000);
+            break;
         }
     }
     else if (choice == '2')
     {
-        Account user = create_account();
-        users.push_back(user);
-        upload_to_data_base(user);
-        log_in(user);
+        try{
+            Account user = create_account();
+            users.push_back(user);
+            upload_to_data_base(user);
+            log_in(user);
+        }
+        catch(...)
+        {}
 
     }
 }
@@ -102,42 +104,61 @@ void log_in(Account user)
 
     Account create_account()
     {
-        string name, surname, email, password;
+        string name, surname, email, password, line;
         int userId;
         char sex;
         unsigned short int age, weight, height;
-        cout << "Enter your name: ";
-        cin >> name;
-        cout << endl << "Enter your surname: ";
-        cin >> surname;
-        cout << endl << "Enter your email: ";
-        cin >> email;
-        cout << endl << "Create your password: ";
-        cin >> password;
-        cout << endl << "Enter your age: ";
-        cin >> age;
-        cout << endl << "Enter your weight: ";
-        cin >> weight;
-        cout << endl << "Enter your height: ";
-        cin >> height;
-        cout << endl << "Chose your sex: M/F";
-        while (true)
-        {
-            sex = getch();
-            if (sex == 'M' || sex == 'm' || sex == 'F' || sex == 'f')
-                break;
-            else
+        try {
+            cout << "Enter your name: ";
+            getline(cin, name);
+            cout << endl << "Enter your surname: ";
+            getline(cin, surname);
+            cout << endl << "Enter your email: ";
+            getline(cin, email);
+                bool email_check = false;
+                for (int i = 0; i<email.length(); i++)
+                {
+                    if (email[i] == '@') email_check = true;
+                }
+                if (email_check == false) throw WrongInputException();
+            cout << endl << "Create your password (password must be at least 8 characters): ";
+            getline(cin, password);
+            if (typeid(password) != typeid(string) || password.length() < 8) throw WrongInputException();
+            cout << endl << "Enter your age: ";
+            getline(cin, line);
+            age = stoi(line);
+            cout << endl << "Enter your weight: ";
+            getline(cin, line);
+            weight = stoi(line);
+            cout << endl << "Enter your height: ";
+            getline(cin, line);
+            height = stoi(line);
+            cout << endl << "Chose your sex: M/F";
+            while (true)
             {
-                    cout << endl << "Wrong key, please try again: M/F";
+                sex = getch();
+                if (sex == 'M' || sex == 'm' || sex == 'F' || sex == 'f')
+                    break;
+                else
+                {
+                        cout << endl << "Wrong key, please try again: M/F";
+                }
+                    
             }
-                
-        }
-        system("cls");
-        cout << "Your account was created";
-        Sleep(3000);
-        system("cls");
+            system("cls");
+            cout << "Your account was created";
+            Sleep(3000);
+            system("cls");
 
-        Account user(name, surname, email, password, age, weight, height, sex);
-        return user;
+            Account user(name, surname, email, password, age, weight, height, sex);
+            return user;
+
+        }
+        catch(...)
+        {
+            cout << endl << "You entered wrong data!" << endl;
+            Sleep(1000);
+            system("cls");
+        }
     }
 

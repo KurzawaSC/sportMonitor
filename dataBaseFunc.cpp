@@ -44,13 +44,17 @@ void load_exercises(vector<Exercise> &exercises, int user_id)
     {
         while(!file.eof())
         {
-            string name;
+            string name, line;
             unsigned short int weight, num_reps;
             int l_user_id;
-            file >> name; if(name == "") break;
-            file >> weight;
-            file >> num_reps;
-            file >> l_user_id;
+            getline(file, line); if(line == "") break;
+            name = line;
+            getline(file, line);
+            weight = stoi(line);
+            getline(file, line);
+            num_reps = stoi(line);
+            getline(file, line);
+            l_user_id = stoi(line);
             if(l_user_id == user_id) exercises.push_back(Exercise(name, weight, num_reps, l_user_id));
         }
         file.close();
@@ -60,25 +64,43 @@ void load_exercises(vector<Exercise> &exercises, int user_id)
 void upload_exercise(vector<Exercise> &exercises, int user_id, string p_name,
                             unsigned short int p_weight, unsigned short int p_num_reps)
 {
-    string name;
-    unsigned short int weight, num_reps;
+    string name{}, line{};
+    int weight{}, num_reps{}, go_next{};
     if(p_name == "empty")
     {
-        cout << "Enter the name of exercise: ";
-        cin >> name;
-        cout << "Enter weight: ";
-        cin >> weight;
-        cout << "Enter number of reps: ";
-        cin >> num_reps;
-        Exercise exercise_add(name, weight, num_reps, user_id);
-        exercises.push_back(exercise_add);
+        cin.sync();
+        while(go_next < 1)
+        {
+            go_next++;
+            try{
+                cout << "Enter the name of exercise: ";
+                getline(cin, line);
+                name = line;
+                cin.clear();
+                cout << "Enter weight: ";
+                getline(cin, line);
+                weight = stoi(line);
+                cout << "Enter number of reps: ";
+                getline(cin, line);
+                num_reps = stoi(line);
+                Exercise exercise_add(name, weight, num_reps, user_id);
+                exercises.push_back(exercise_add);
 
-        fstream file("exercise.txt", ios::app);
-        file << exercise_add.get_name() << endl;
-        file << exercise_add.get_weight() << endl;
-        file << exercise_add.get_num_reps() << endl;
-        file << user_id << endl;
-        file.close(); 
+                fstream file("exercise.txt", ios::app);
+                file << exercise_add.get_name() << endl;
+                file << exercise_add.get_weight() << endl;
+                file << exercise_add.get_num_reps() << endl;
+                file << user_id << endl;
+                file.close(); 
+            }
+            catch(...)
+            {
+                cout << endl << "You entered wrong data" << endl;
+                Sleep(1000);
+                system("cls");
+                go_next = 0;
+            }
+        }
     } else
     {
         fstream file("exercise.txt", ios::app);
